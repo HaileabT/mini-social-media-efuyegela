@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
-import { PrismaClient } from "../../../../generated/prisma";
 import { hasPermission } from "@/lib/permissionsManager";
+import { prisma } from "@/lib/prisma";
 
-const prisma = new PrismaClient();
+prisma;
 
 export async function GET(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { prisma } from "../../../../lib/prisma";
+import { prisma } from "@/lib/prisma";
 import bcrypt from "bcrypt";
 import { registerSchema } from "../../../../utils/validation";
 
@@ -23,10 +23,7 @@ export async function POST(req: NextRequest) {
     const { email, name, password } = validationResult.data;
     const existing = await prisma.user.findUnique({ where: { email } });
     if (existing) {
-      return NextResponse.json(
-        { error: "User already exists" },
-        { status: 409 }
-      );
+      return NextResponse.json({ error: "User already exists" }, { status: 409 });
     }
     const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
     const user = await prisma.user.create({
@@ -35,9 +32,6 @@ export async function POST(req: NextRequest) {
     });
     return NextResponse.json(user, { status: 201 });
   } catch (error) {
-    return NextResponse.json(
-      { error: "Failed to register", details: error },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Failed to register", details: error }, { status: 500 });
   }
 }
